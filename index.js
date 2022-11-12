@@ -21,6 +21,11 @@ console.log()
 app.use('/api/usuarios',require('./routes/usuarios'));
 app.use('/auth',require('./routes/auth'));
 
+app.use('/api/hospitales',require('./routes/hospitales'));
+app.use('/api/medicos',require('./routes/medicos'));
+app.use('/api/todo',require('./routes/todo'));
+app.use('/api/uploads',require('./routes/upload'));
+
 dbConnection
 app.listen( process.env.PORT,()=>{
     console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);

@@ -84,5 +84,12 @@ const googleAuth=async(req,res=response)=>{
   }
   
 }
-
-module.exports = { login ,googleAuth};
+const renewToken= async (req,res=response)=>{
+  const uid = req.uid
+  const token=await generarJWT(uid)
+  res.json({
+    ok:true,
+    token
+  })
+}
+module.exports = { login ,googleAuth,renewToken};

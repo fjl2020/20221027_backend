@@ -14,7 +14,7 @@ const getTodo = async (req,res=response)=>{
         },'nombre'),
         Medico.find({
             nombre : regex
-        }).populate('usuario','nombre').populate('hospitales','nombre'),
+        }).populate('usuario','nombre').populate('hospital','nombre'),
 
         Hospital.find({
             nombre : regex
@@ -47,7 +47,7 @@ const getTodoByCol = async (req,res=response)=>{
         case 'medicos':
             busq= await Medico.find({
                 nombre : regex
-            },'nombre').populate('usuario','nombre').populate('hospitales','nombre');
+            },'nombre').populate('usuario','nombre').populate('hospital','nombre');
             break;
         case 'hospitales':
             busq= await Hospital.find({

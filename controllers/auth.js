@@ -25,7 +25,9 @@ const login = async (req, res = response) => {
     const token=await generarJWT(usuarioAuth.id)
     return res.status(200).json({
         ok: true,
-        token
+        token,
+        usuario:usuarioAuth,
+        id:usuarioAuth.id
       });
   } catch (error) {
     console.log(error);
@@ -71,7 +73,9 @@ const googleAuth=async(req,res=response)=>{
 
     res.status(200).json({
       ok:true,
-      token
+      token,
+      usuario,
+      id:usuario.id
     });
     
   } catch (error) {
@@ -87,9 +91,12 @@ const googleAuth=async(req,res=response)=>{
 const renewToken= async (req,res=response)=>{
   const uid = req.uid
   const token=await generarJWT(uid)
+  const usuarioDb= await Usuario.findById(uid)
   res.json({
     ok:true,
-    token
+    token,
+    id:uid,
+    usuario:usuarioDb
   })
 }
 module.exports = { login ,googleAuth,renewToken};

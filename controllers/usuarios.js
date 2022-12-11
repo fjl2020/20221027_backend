@@ -48,8 +48,9 @@ const crearUsuario = async (req, res = response) => {
     const token=await  generarJWT(usuario.id)
     res.status(200).json({
       ok: true,
-      msg: usuario,
-      token
+      token,
+      usuario:usuario,
+      id:usuario.id
     });
   } catch (error) {
     console.log(error);
@@ -87,8 +88,17 @@ const editarUsuario = async (req, res = response) => {
           msg: "El email existe",
         });
       }
-    }
-    campos.email = email;
+    } 
+    if (!usuariodb.google) 
+      {
+        campos.email = email
+      }
+    else if (usuariodb.email!=email){
+      return res.status(400).json({
+        ok:false,
+        msg:"Usuarios de google no pueden cambiar su correo"
+      })
+    };
 
     const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, {
       new: true,

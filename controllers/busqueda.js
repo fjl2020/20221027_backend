@@ -1,4 +1,6 @@
 const {response} = require('express')
+
+
 const Hospital = require('../models/hospitales')
 const medicos = require('../models/medicos')
 const Medico = require('../models/medicos')
@@ -7,7 +9,7 @@ const Usuario = require('../models/usuario')
 const getTodo = async (req,res=response)=>{
     const buscarArg=req.params.buscarArg
     const regex =new RegExp(buscarArg,'i')
-
+   
     const [usuario,medico,hospital] = await Promise.all([
         Usuario.find({
             nombre : regex
@@ -41,18 +43,18 @@ const getTodoByCol = async (req,res=response)=>{
         case 'usuarios':
             busq= await Usuario.find({
                 nombre : regex
-            },'nombre');
+            },'nombre email role google img');
 
             break;
         case 'medicos':
             busq= await Medico.find({
                 nombre : regex
-            },'nombre').populate('usuario','nombre').populate('hospital','nombre');
+            },'nombre img').populate('usuario','nombre').populate('hospital','nombre');
             break;
         case 'hospitales':
             busq= await Hospital.find({
                 nombre : regex
-            },'nombre').populate('usuario','nombre');
+            }).populate('usuario','nombre');
             break;
         default:
             return res.status(400).json({

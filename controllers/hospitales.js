@@ -20,7 +20,7 @@ const crearHospital = async (req, res) => {
       return res.status(200).json({
         ok: true,
         msg: 'Usuario Creado',
-        Hospital : hospital_saved
+        hospital : hospital_saved
     });
     } catch (error) {
       console.log(error);

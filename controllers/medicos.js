@@ -2,29 +2,44 @@ const {response} = require("express")
 const Medico = require("../models/medicos")
 
 const getMedicos = async (req,res)=>{
-    const medicos = await Medico.find({},"nombre img").populate('usuario','nombre').populate('hospital','nombre')
+    const medicos = await Medico.find({},"nombre img")
+      .populate('usuario','nombre img')
+      .populate('hospital','nombre img')
     return res.status(200).json({
         ok:true,
-        msg: medicos
+        medicos
     });
 
 
 }
+const getMedicoById = async (req,res)=>{
+  const {id}=req.params
+  // console.log('medico',id);
+  try {
+    const medicos = await Medico.findById(id,"nombre img")
+    .populate('usuario','nombre img')
+    .populate('hospital','nombre img')
+  return res.status(200).json({
+      ok:true,
+      medicos
+  });
 
+  
+  } catch (error) {
+      return res.status(500).json({
+          ok:false,
+          error
+  });
+
+    
+  }
+  
+}
 const crearMedico = async (req,res=response)=>{
     const uid=req.uid
     const {hospital,nombre} = req.body
     console.log(uid);
     try {
-        // const hospitalDB = await Hospital.findById({hospital},"nombre")
-        // console.log(hospitalDB);
-        // if (!hospitalDB)    
-        // {
-        //     return res.status(400).json({
-        //         ok:true,
-        //         msg: 'El hospital no existe'
-        //     });        
-        // }
         const medicoDB = new Medico({usuario:uid,hospitales:hospital,...req.body})
         console.log(medicoDB);
         const medicoSaved=await medicoDB.save()
@@ -108,4 +123,4 @@ const borrarMedico = async (req,res)=>{
 
 }
 
-module.exports = {getMedicos,  crearMedico, actualizarMedico, borrarMedico}
+module.exports = {getMedicos,  crearMedico, actualizarMedico, borrarMedico,getMedicoById}

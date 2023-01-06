@@ -2,7 +2,8 @@ const Usuario = require("../models/usuario");
 const { response } = require("express");
 const bcrypt = require("bcryptjs");
 const { generarJWT } = require("../helpers/jwt");
-const {googleVerify} = require("../helpers/google-verify")
+const {googleVerify} = require("../helpers/google-verify");
+const { getMenuFrontEnd } = require("../helpers/menu-frontend");
 
 
 const login = async (req, res = response) => {
@@ -27,7 +28,8 @@ const login = async (req, res = response) => {
         ok: true,
         token,
         usuario:usuarioAuth,
-        id:usuarioAuth.id
+        id:usuarioAuth.id,
+        menu:getMenuFrontEnd(usuarioAuth.role)
       });
   } catch (error) {
     console.log(error);
@@ -75,7 +77,8 @@ const googleAuth=async(req,res=response)=>{
       ok:true,
       token,
       usuario,
-      id:usuario.id
+      id:usuario.id,
+      menu:getMenuFrontEnd(usuario.role)
     });
     
   } catch (error) {
@@ -96,7 +99,8 @@ const renewToken= async (req,res=response)=>{
     ok:true,
     token,
     id:uid,
-    usuario:usuarioDb
+    usuario:usuarioDb,
+    menu:getMenuFrontEnd(usuarioDb.role)
   })
 }
 module.exports = { login ,googleAuth,renewToken};
